@@ -268,7 +268,25 @@ for(var i in courses.data){
 		group: "nodes",
 		data: { id: currentObj},
 		position: { x: x[currentThousand] , y: 1000 - (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 100)}
-	});
+  });
+
+  infoText = currentObj + ": " + courses.data[i][1] + "<hr><br />" + courses.data[i][2] + "<br /><br />Prerequisites: " + courses.data[i][3];
+  
+  cy.$("[id='" + currentObj + "']").qtip({
+    content: infoText,
+    position: {
+      my: 'top center',
+      at: 'bottom center'
+    },
+    style: {
+      classes: 'qtip-bootstrap',
+      tip: {
+        width: 16,
+        height: 8
+      }
+    }
+  }); 
+
 	x[currentThousand] += width / thousandCount[currentThousand];
 	console.log(inc);
 	
@@ -285,7 +303,3 @@ for(i in courses.data){
 		}
 	}
 }
-
-console.log(cy.elements.nodes);
-console.log(cy.elements.edges);
-
