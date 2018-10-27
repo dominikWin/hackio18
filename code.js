@@ -30,7 +30,7 @@ for(i = 0; i < courses.data.length; i++){
 for(i = 0; i < courses.data.length; i++){
 	for(j = 0; j < courses.data[i][3].length; j++){
 		if(courses.data[i][3][j].length > 0){
-			prereqEdges.push({ data: { source: courses.data[i][3][j], target: courses.data[i][0] } })
+			prereqEdges.push({ data: { target: courses.data[i][3][j], source: courses.data[i][0] } })
 
 		}
 	}
