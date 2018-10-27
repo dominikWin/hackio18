@@ -42,3 +42,18 @@ var cy = window.cy = cytoscape({
     ]
   },
 });
+
+cy.$("[id='CSE 2221']").qtip({
+  content: 'Hello!',
+  position: {
+    my: 'top center',
+    at: 'bottom center'
+  },
+  style: {
+    classes: 'qtip-bootstrap',
+    tip: {
+      width: 16,
+      height: 8
+    }
+  }
+});
