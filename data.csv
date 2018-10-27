@@ -1,4 +1,6 @@
-Course,Name,Desc,Children,Prereqs
-CSE 2221,Software I: Software Components,,,CSE 1211 or CSE 1212 or CSE 1221 or CSE 1222 or CSE 1223 or CSE 201 or CSE 202 or CSE 203 or CSE 204 or CSE 205 or EG 167 or CSE Placement Level A; co-req: Math 1151 or Math 1161
-CSE 2231,Software II: Software Development and Design,,CSE 2221,
-CSE 2501,"Social, Ethical, and Professional Issues in Computing",,CSE 2231,
+Course,Name,Desc, Prereqs
+CSE 1212,,,CSE 1211
+CSE 1211,,,
+CSE 2221,Software I: Software Components,,CSE 1211 or CSE 1212
+CSE 2231,Software II: Software Development and Design,CSE 2221
+CSE 2501,"Social, Ethical, and Professional Issues in Computing",CSE 2231,
