@@ -1,13 +1,14 @@
-
+var str = "";
 var parsePrereqs = function(prereqString){
-  console.log(prereqString);
+	courses.data
+	str += prereqString + "\n";
+  	console.log(prereqString);
 	return prereqString.split(" or ");
 }
-var csv = `Course,Name,Desc,Prereqs
-"CSE 5231","Software Engineering Techniques","","CSE 3901 or CSE 3902 or CSE 560"
+var csv = `"CSE 5231","Software Engineering Techniques","","CSE 3901 or CSE 3902 or CSE 560"
 "CSE 2193","Individual Studies in Computer Science and","Planning, conducting, and reporting a special study appropriate to the needs of the students.","Permission of Instructor"
 "CSE 6999","MS Thesis Research in Computer Science and","MS research in Computer Science and Engineering, leading to a thesis.",""
-"CSE 5433","Operating Systems Laboratory","Introduction to the internals of operating systems; designing and implementing components within commercial","CSE 2431 or CSE 5431 or (CSE 660 and (CSE 2451 or CSE 459.21))"
+"CSE 5433","Operating Systems Laboratory","Introduction to the internals of operating systems; designing and implementing components within commercial","CSE 2431 or CSE 5431 or (CSE 660 and CSE 2451) or (CSE 660 and CSE 459.21)"
 "CSE 4252","Programming in C++","Syntax and pragmatics of C++ programming; C++ types, arrays, classes, pointers; objects and classes; compiletime vs. run-time picture; inheritance; template classes.","CSE 2231"
 "CSE 5531","Introduction to Cognitive Science","Interdisciplinary survey of the fields of artificial intelligence, linguistics, neuroscience, philosophy of mind,and psychology; various aspects of cognitive perception, representation, and computation.","At least 12 sem-cr-hrs equivalent from at least two of the following four"
 "CSE 1113","Spreadsheet Programming for Business","Spreadsheet modeling/programming concepts and techniques to solve business related problems;efficient/effective data handling, computational analysis and decision support.","(Math 1130 or higher) or (Math 130 or higher under quarters)"
@@ -172,30 +173,33 @@ var csv = `Course,Name,Desc,Prereqs
 "CSE 5239","Intermediate Studies in Software Engineering","Intermediate-level topics in software engineering.",""
 "CSE 5331","Foundations II: Data Structures and","Design/analysis of algorithms and data structures; divide-and-conquer; sorting and selection, search trees,hashing, graph algorithms, string matching; probabilistic analysis; randomized algorithms; NP-completeness.","(CSE 2231 or CSE 321) and (CSE 2321 or Math 366) and (Math 2566 orMath 566) and (Stat 3470 or Stat 427)"
 "CSE 5043","Overview of Computer Systems For NonMajors","Introduction to computer architecture and organization at machine and assembly level; pointers and addressing","Prereq: 5022 or equivalent, and 5032 or equivalent"
-"CSE 6349","Advanced Studies in Programming Languages","Advanced-level topics in programming languages.",""
-`;
+"CSE 6349","Advanced Studies in Programming Languages","Advanced-level topics in programming languages.",""`;
 
 //read in the courses
-var courses = Papa.parse(csv);
-
-//remove the column headers
-courses.data.splice(0, 1);
+var courseList = Papa.parse(csv);
+var courses = {};
+courses.data = [];
+for(i = 0; i < courseList.data.length; i++){
+	courses.data[courseList.data[i][0]] = courseList.data[i];
+}
 console.log(courses);
+
+
 
 //each prereq
 var prereqEdges = [];
 
 //add each course as a node
 var courseNodes = [];
-for(i = 0; i < courses.data.length; i++){
+for(var i in courses.data){
 	//parse the prereqs into a list
 	courses.data[i][3] = parsePrereqs(courses.data[i][3]);
 	courseNodes.push({data: { id: courses.data[i][0]}});
 	
 }
-for(i = 0; i < courses.data.length; i++){
+for(i in courses.data){
 	for(j = 0; j < courses.data[i][3].length; j++){
-		if(courses.data[i][3][j].length > 0){
+		if(courses.data[i][3][j].length > 0 && courses.data[courses.data[i][3][j]]){
 			prereqEdges.push({ data: { target: courses.data[i][3][j], source: courses.data[i][0] } })
 
 		}
