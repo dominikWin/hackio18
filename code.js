@@ -187,8 +187,18 @@ var csv = `"CSE 5231","Software Engineering Techniques","","CSE 3901 or CSE 3902
 var courseList = Papa.parse(csv);
 var courses = {};
 courses.data = [];
+var thousandCount = [];
+var x = [];
+var curThousand = 0;
 for(i = 0; i < courseList.data.length; i++){
+
 	courses.data[courseList.data[i][0]] = courseList.data[i];
+	curThousand = (Math.ceil(courseList.data[i][0].substring(courseList.data[i][0].length - 4) / 1000) * 1000)
+	if(!thousandCount[curThousand]){
+		thousandCount[curThousand] = 0;
+		x[curThousand] = 0;
+	}
+	thousandCount[curThousand]++;
 }
 console.log(courses);
 
@@ -196,25 +206,6 @@ console.log(courses);
 
 //each prereq
 var prereqEdges = [];
-
-//add each course as a node
-var courseNodes = [];
-for(var i in courses.data){
-	//parse the prereqs into a list
-	courses.data[i][3] = parsePrereqs(courses.data[i][3]);
-	courseNodes.push({data: { id: courses.data[i][0]}});
-	
-}
-for(i in courses.data){
-	for(j = 0; j < courses.data[i][3].length; j++){
-		if(courses.data[i][3][j].length > 0 && courses.data[courses.data[i][3][j]]){
-			prereqEdges.push({ data: { target: courses.data[i][3][j], source: courses.data[i][0] } })
-
-		}
-	}
-}
-console.log(courseNodes);
-console.log(prereqEdges);
 
 var cy = window.cy = cytoscape({
 	container: document.getElementById('cy'),
@@ -251,10 +242,50 @@ var cy = window.cy = cytoscape({
 	],
   
 	elements: {
-	  nodes: courseNodes,
-	  edges: prereqEdges
+	  nodes: [],
+	  edges: []
 	//   edges: [
 	// 	{ data: { source: 'CSE 2221', target: 'CSE 1223' } },
 	//   ]
 	},
   });
+
+
+//add each course as a node
+var courseNodes = [];
+var currentObj = {};
+var width = window.innerWidth - 100;
+var inc = width / Object.keys(courses.data).length;
+var curX = inc * 3;
+var currentThousand = 0;
+for(var i in courses.data){
+	//parse the prereqs into a list
+	courses.data[i][3] = parsePrereqs(courses.data[i][3]);
+	//courseNodes.push({data: { id: courses.data[i][0]}});
+	currentObj = courses.data[i][0];
+	currentThousand = (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 1000);
+	cy.add({
+		group: "nodes",
+		data: { id: currentObj},
+		position: { x: x[currentThousand] , y: 1000 - (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 100)}
+	});
+	x[currentThousand] += width / thousandCount[currentThousand];
+	console.log(inc);
+	
+}
+for(i in courses.data){
+	for(j = 0; j < courses.data[i][3].length; j++){
+		if(courses.data[i][3][j].length > 0 && courses.data[courses.data[i][3][j]]){
+			cy.add({
+				group: "edges",
+				data: { target: courses.data[i][3][j], source: courses.data[i][0] },
+			});
+			//prereqEdges.push({ data: { target: courses.data[i][3][j], source: courses.data[i][0] } })
+
+		}
+	}
+}
+
+console.log(cy.elements.nodes);
+console.log(cy.elements.edges);
+
