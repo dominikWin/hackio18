@@ -260,7 +260,7 @@ var curX = inc * 3;
 var currentThousand = 0;
 for(var i in courses.data){
 	//parse the prereqs into a list
-	courses.data[i][3] = parsePrereqs(courses.data[i][3]);
+	courses.data[i][4] = parsePrereqs(courses.data[i][3]);
 	//courseNodes.push({data: { id: courses.data[i][0]}});
 	currentObj = courses.data[i][0];
 	currentThousand = (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 1000);
@@ -292,13 +292,13 @@ for(var i in courses.data){
 	
 }
 for(i in courses.data){
-	for(j = 0; j < courses.data[i][3].length; j++){
-		if(courses.data[i][3][j].length > 0 && courses.data[courses.data[i][3][j]]){
+	for(j = 0; j < courses.data[i][4].length; j++){
+		if(courses.data[i][4][j].length > 0 && courses.data[courses.data[i][4][j]]){
 			cy.add({
 				group: "edges",
-				data: { target: courses.data[i][3][j], source: courses.data[i][0] },
+				data: { target: courses.data[i][4][j], source: courses.data[i][0] },
 			});
-			//prereqEdges.push({ data: { target: courses.data[i][3][j], source: courses.data[i][0] } })
+			//prereqEdges.push({ data: { target: courses.data[i][4][j], source: courses.data[i][0] } })
 
 		}
 	}
