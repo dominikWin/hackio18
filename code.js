@@ -1,9 +1,17 @@
 var str = "";
 var parsePrereqs = function(prereqString){
-	courses.data
+	/*courses.data
 	str += prereqString + "\n";
-  	console.log(prereqString);
-	return prereqString.split(" or ");
+  var splits = prereqString.split(" or ");
+  var split2 = [];
+  for(var s in splits) {
+    console.log('HERE2: ' + splits[s]);
+    split2 = split2.concat(splits[s].split(" and "));
+  }
+  console.log('HERE: ' + split2);
+  return split2;*/
+  var out = prereqString.match(/([A-Z][A-Za-z]+ [1-9][0-9]+)/g);
+  return out == null ? [] : out;
 }
 var csv = `"CSE 5231","Software Engineering Techniques","","CSE 3901 or CSE 3902 or CSE 560"
 "CSE 2193","Individual Studies in Computer Science and","Planning, conducting, and reporting a special study appropriate to the needs of the students.","Permission of Instructor"
