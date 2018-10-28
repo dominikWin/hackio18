@@ -71,8 +71,7 @@ for line in lines:
                 subject.append(line[:-1])
                 courseTemp = line[:-1] + ' '
 
-        # Idk how to use else if ¯\_(ツ)_/¯
-        if (not danger) & (withinLine % 4 == 2) :
+        elif (not danger) & (withinLine % 4 == 2) :
             line2 = line
             # Make sure 1281.02H doesn't mess up
             if ' ' in line :
@@ -93,4 +92,9 @@ for line in lines:
     # Store current line (for when pdf to text messes up)
     oldLine = line
 
-print(course)
+a = 0
+out = open('courses.txt', 'w')
+for i in course:
+    out.write(course[a] + '\n')
+    a += 1
+out.close()
