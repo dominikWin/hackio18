@@ -9,8 +9,8 @@ public class RemoveEmptyLines {
 	
 	public static void main(String[] args) throws Exception{
 		//Read in a file and remove all empty lines
-		File file = new File("C:\\Users\\Tze Hei\\Documents\\CourseBulletin.txt");
-		File outputFile = new File("C:\\Users\\Tze Hei\\Documents\\CourseBulletinWhiteless.txt");
+		File file = new File("C:\\Users\\Tze Hei\\Documents\\hackio18\\CourseBulletin.txt");
+		File outputFile = new File("C:\\Users\\Tze Hei\\Documents\\hackio18\\CourseBulletinWhiteless.txt");
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		

@@ -16,7 +16,7 @@ public class CourseParser {
 	public static void main(String[] args) throws Exception{
 
 		//Read in a file without empty lines
-		File file = new File("C:\\Users\\Tze Hei\\Documents\\CourseBulletinWhiteless.txt");
+		File file = new File("C:\\Users\\Tze Hei\\Documents\\hackio18\\CourseBulletinWhiteless.txt");
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		ArrayList<String> name = new ArrayList<String>();
