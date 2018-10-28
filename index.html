@@ -16,14 +16,24 @@
 
     <script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
     <script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.5.0/cytoscape-dagre.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119704831-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-119704831-2');
+    </script>
+
   </head>
   <body>
     <img src="osulogo.png">
     <h1>CSE Course Scheduler</h1>
     <p>Click and drag to move around. Click on a course to see more info. <br />Upload your advising report as a PDF to see which prerequisites have been met.</p>
-    
     <button onclick="update_completed()">Clear</button> 
-    <form action = "http://localhost:5000/uploader" method = "POST" 
+    <form action = "https://tus.helpmeschedule.com/uploader" method = "POST" 
          enctype = "multipart/form-data">
          <input type = "file" name = "file" />
          <input type = "submit"/>

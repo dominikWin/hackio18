@@ -107,20 +107,25 @@ app = Flask(__name__)
 	
 @app.route('/uploader', methods = ['GET', 'POST'])
 def upload_file():
-   if request.method == 'POST':
-      f = request.files['file']
-      fname = secure_filename(f.filename)
-      f.save(fname)
-      call(["pdftotext", fname, "out.txt"])
+    try:
+        if request.method == 'POST':
+            f = request.files['file']
+            fname = secure_filename(f.filename)
+            f.save(fname)
+            call(["pdftotext", fname, "out.txt"])
 
-      courses = ','.join(parse_file("out.txt"))
+            
 
-      os.remove("out.txt")
-      os.remove(fname)
+            courses = ','.join(parse_file("out.txt"))
 
-      html = "<html><head><meta http-equiv=\"refresh\" content=\"0; URL='http://localhost:8000/?comp=" + urllib.parse.quote(courses) + "'\" /></head></html>"
+            os.remove("out.txt")
+            os.remove(fname)
 
-      return html
+            html = "<html><head><meta http-equiv=\"refresh\" content=\"0; URL='https://helpmeschedule.com/?comp=" + urllib.parse.quote(courses) + "'\" /></head></html>"
+
+            return html
+    except:
+        return 'Something went wrong'
 		
 if __name__ == '__main__':
-   app.run(debug = True)
+   app.run(debug = True, port=80, host='0.0.0.0')
