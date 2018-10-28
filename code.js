@@ -1,18 +1,3 @@
-var str = "";
-var parsePrereqs = function(prereqString){
-	/*courses.data
-	str += prereqString + "\n";
-  var splits = prereqString.split(" or ");
-  var split2 = [];
-  for(var s in splits) {
-    console.log('HERE2: ' + splits[s]);
-    split2 = split2.concat(splits[s].split(" and "));
-  }
-  console.log('HERE: ' + split2);
-  return split2;*/
-  var out = prereqString.match(/([A-Z][A-Za-z]+ [1-9][0-9]+)/g);
-  return out == null ? [] : out;
-}
 var csv = `"CSE 5231","Software Engineering Techniques","","CSE 3901 or CSE 3902 or CSE 560","http://coe-portal.cse.ohio-state.edu/pdf-exports/CSE/CSE-5231.pdf"
 "CSE 2193","Individual Studies in Computer Science and Engineering","Planning, conducting, and reporting a special study appropriate to the needs of the students.","Permission of Instructor","http://coe-portal.cse.ohio-state.edu/pdf-exports/CSE/CSE-2193.pdf"
 "CSE 6999","MS Thesis Research in Computer Science and Engineering","MS research in Computer Science and Engineering, leading to a thesis.","","http://coe-portal.cse.ohio-state.edu/pdf-exports/CSE/CSE-6999.pdf"
@@ -183,6 +168,11 @@ var csv = `"CSE 5231","Software Engineering Techniques","","CSE 3901 or CSE 3902
 "CSE 5043","Overview of Computer Systems For NonMajors","Introduction to computer architecture and organization at machine and assembly level; pointers and addressing","Prereq: 5022 or equivalent, and 5032 or equivalent","http://coe-portal.cse.ohio-state.edu/pdf-exports/CSE/CSE-5043.pdf"
 "CSE 6349","Advanced Studies in Programming Languages","Advanced-level topics in programming languages.","","http://coe-portal.cse.ohio-state.edu/pdf-exports/CSE/CSE-6349.pdf"`;
 
+var parsePrereqs = function(prereqString){
+  var out = prereqString.match(/([A-Z][A-Za-z]+ [1-9][0-9]+)/g);
+  return out == null ? [] : out;
+}
+
 //read in the courses
 var courseList = Papa.parse(csv);
 var courses = {};
@@ -244,11 +234,8 @@ var cy = window.cy = cytoscape({
 	elements: {
 	  nodes: [],
 	  edges: []
-	//   edges: [
-	// 	{ data: { source: 'CSE 2221', target: 'CSE 1223' } },
-	//   ]
 	},
-  });
+});
 
 
 //add each course as a node
@@ -261,7 +248,6 @@ var currentThousand = 0;
 for(var i in courses.data){
 	//parse the prereqs into a list
 	courses.data[i][5] = parsePrereqs(courses.data[i][3]);
-	//courseNodes.push({data: { id: courses.data[i][0]}});
 	currentObj = courses.data[i][0];
 	currentThousand = (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 1000);
 	cy.add({
@@ -298,8 +284,6 @@ for(i in courses.data){
 				group: "edges",
 				data: { target: courses.data[i][5][j], source: courses.data[i][0] },
 			});
-			//prereqEdges.push({ data: { target: courses.data[i][5][j], source: courses.data[i][0] } })
-
 		}
 	}
 }
