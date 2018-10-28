@@ -8,17 +8,34 @@ body {
   height: 100%;
   position: absolute;
   left: 0;
-  top: 100;
+  top: 120;
   z-index: 999;
 }
 
 h1 {
-  opacity: 0.5;
+  text-align: center;
+  opacity: 0.6;
+  font-size: 1.5em;
+}
+
+p {
+  text-align: center;
   font-size: 1em;
 }
 
+img {
+  float: right;
+  width: 12%;
+}
+
 button {
-  background-color:#FF0000;
+  float: left;
+  margin-left: 30%;
+  margin-right: 2%;
+}
+
+input {
+  float: left;
 }
 
 

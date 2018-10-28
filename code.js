@@ -366,7 +366,7 @@ function update_completed() {
 			node.data('bg', '#000000');
 		} else
 		if(allGood) {
-			node.data('bg', '#00ff00');
+			node.data('bg', '#009000');
 		} else {
 			node.data('bg', '#11479e')
 		}
@@ -380,7 +380,7 @@ function show_prereqs(id) {
 
 function show_upstream(id) {
 	var currentObj = id.substring(2);
-	recursive_highlight_up(cy.$("[id='" + currentObj + "']"), '#ff0000');
+	recursive_highlight_up(cy.$("[id='" + currentObj + "']"), '#dd0000');
 }
 
 function mark_completed(id) {
