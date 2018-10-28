@@ -20,6 +20,11 @@
   <body>
     <h1>cytoscape-dagre demo</h1>
     <button onclick="update_completed()">Clear</button> 
+    <form action = "http://localhost:5000/uploader" method = "POST" 
+         enctype = "multipart/form-data">
+         <input type = "file" name = "file" />
+         <input type = "submit"/>
+      </form>
     <div id="cy"></div>
     <!-- Load application code at the end to ensure DOM is loaded -->
     <script src="code.js"></script>

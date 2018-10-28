@@ -249,6 +249,24 @@ var cy = window.cy = cytoscape({
 	},
 });
 
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+	console.log('Query variable %s not found', variable);
+	return null;
+}
+
+var get_comp = getQueryVariable('comp');
+var completed_prerequs_init = [];
+if (get_comp != null) {
+	completed_prerequs_init = parsePrereqs(get_comp);
+}
 
 //add each course as a node
 var courseNodes = [];
@@ -262,9 +280,12 @@ for(var i in courses.data){
 	courses.data[i][5] = parsePrereqs(courses.data[i][3]);
 	currentObj = courses.data[i][0];
 	currentThousand = (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 1000);
+
+	var completed = $.inArray(currentObj, completed_prerequs_init) > -1;
+
 	cy.add({
 		group: "nodes",
-		data: { id: currentObj, 'bg': '#11479e', completed: false },
+		data: { id: currentObj, 'bg': '#11479e', completed: completed },
 		position: { x: x[currentThousand] , y: 1000 - (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 100)}
   });
 
@@ -342,7 +363,7 @@ function update_completed() {
 		}
 
 		if(node.data('completed')) {
-
+			node.data('bg', '#000000');
 		} else
 		if(allGood) {
 			node.data('bg', '#00ff00');
