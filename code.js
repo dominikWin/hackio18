@@ -215,9 +215,10 @@ var cy = window.cy = cytoscape({
 		  'text-opacity': 0.5,
 		  'text-valign': 'center',
 		  'text-halign': 'right',
-		  'background-color': '#11479e'
+		  'background-color': function( ele ){ return ele.data('bg') }
 		}
-	  },
+		},
+		
   
 	  {
 		selector: 'edge',
@@ -228,7 +229,18 @@ var cy = window.cy = cytoscape({
 		  'line-color': '#9dbaea',
 		  'target-arrow-color': '#9dbaea'
 		}
-	  }
+		},
+
+		{
+			selector: '.taken',
+			style: {
+				'content': 'data(id)',
+				'text-opacity': 0.5,
+				'text-valign': 'center',
+				'text-halign': 'right',
+				'background-color': '#000000'
+			}
+			}
 	],
   
 	elements: {
@@ -252,12 +264,14 @@ for(var i in courses.data){
 	currentThousand = (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 1000);
 	cy.add({
 		group: "nodes",
-		data: { id: currentObj},
+		data: { id: currentObj, 'bg': '#11479e' },
 		position: { x: x[currentThousand] , y: 1000 - (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 100)}
   });
 
   infoText = '<a href="' + courses.data[i][4] + '">' + currentObj + "</a>: " + courses.data[i][1] + "<hr><br />" + courses.data[i][2] + "<br /><br />Prerequisites: " + courses.data[i][3];
-  
+	
+	infoText = infoText + "<br /><a href=\"#\" id=\"mc" + currentObj + "\" onclick=\"mark_completed(this.id)\">Mark Completed</a>";
+
   cy.$("[id='" + currentObj + "']").qtip({
     content: infoText,
     position: {
@@ -286,4 +300,11 @@ for(i in courses.data){
 			});
 		}
 	}
+}
+
+function mark_completed(id) {
+	var currentObj = id.substring(2);
+	console.log(currentObj);
+	cy.$("[id='" + currentObj + "']").data('bg', '#000000');
+	cy.resize();
 }
