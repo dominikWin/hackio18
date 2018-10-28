@@ -264,14 +264,15 @@ for(var i in courses.data){
 	currentThousand = (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 1000);
 	cy.add({
 		group: "nodes",
-		data: { id: currentObj, 'bg': '#11479e' },
+		data: { id: currentObj, 'bg': '#11479e', completed: false },
 		position: { x: x[currentThousand] , y: 1000 - (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 100)}
   });
 
   infoText = '<a href="' + courses.data[i][4] + '">' + currentObj + "</a>: " + courses.data[i][1] + "<hr><br />" + courses.data[i][2] + "<br /><br />Prerequisites: " + courses.data[i][3];
 	
 	infoText = infoText + "<br /><a href=\"#\" id=\"mc" + currentObj + "\" onclick=\"mark_completed(this.id)\">Mark Completed</a>";
-	infoText = infoText + " <a href=\"#\" id=\"sp" + currentObj + "\" onclick=\"show_prereqs(this.id)\">Show Prerequs</a>";
+	infoText = infoText + "<br /><a href=\"#\" id=\"sp" + currentObj + "\" onclick=\"show_prereqs(this.id)\">Show Prerequs</a>";
+	infoText = infoText + "<br /><a href=\"#\" id=\"us" + currentObj + "\" onclick=\"show_upstream(this.id)\">Show Upstream</a>";
 
   cy.$("[id='" + currentObj + "']").qtip({
     content: infoText,
@@ -305,7 +306,6 @@ for(i in courses.data){
 
 function recursive_highlight(node, color) {
 	var neighbors = node.outgoers();
-	console.log(neighbors);
 	for(var i = 0; i < neighbors.length; i++) {
 		if(neighbors[i]._private.group == 'edges') {
 			continue;
@@ -315,14 +315,60 @@ function recursive_highlight(node, color) {
 	}
 }
 
+function recursive_highlight_up(node, color) {
+	var neighbors = node.incomers();
+	for(var i = 0; i < neighbors.length; i++) {
+		if(neighbors[i]._private.group == 'edges') {
+			continue;
+		}
+		neighbors[i].data('bg', color);
+		recursive_highlight_up(neighbors[i], color);
+	}
+}
+
+function update_completed() {
+	for(i = 0; i < courseList.data.length; i++){
+		var courseName = courseList.data[i][0];
+		var node = cy.$("[id='" + courseName + "']");
+
+		// Check if all prerequs good
+		var allGood = true;
+		var neighbors = node.outgoers();
+		for(var j = 0; j < neighbors.length; j++) {
+			if(neighbors[j]._private.group == 'edges') {
+				continue;
+			}
+			allGood &= neighbors[j].data('completed');
+		}
+
+		if(node.data('completed')) {
+
+		} else
+		if(allGood) {
+			node.data('bg', '#00ff00');
+		} else {
+			node.data('bg', '#11479e')
+		}
+	}
+}
+
 function show_prereqs(id) {
 	var currentObj = id.substring(2);
 	recursive_highlight(cy.$("[id='" + currentObj + "']"), '#ff0000');
 }
 
+function show_upstream(id) {
+	var currentObj = id.substring(2);
+	recursive_highlight_up(cy.$("[id='" + currentObj + "']"), '#ff0000');
+}
+
 function mark_completed(id) {
 	var currentObj = id.substring(2);
 	console.log(currentObj);
-	cy.$("[id='" + currentObj + "']").data('bg', '#000000');
+	cy.$("[id='" + currentObj + "']").data('bg', '#000000').data('completed', true);
 	cy.resize();
+
+	update_completed();
 }
+
+update_completed();
