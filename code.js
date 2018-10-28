@@ -262,7 +262,7 @@ for(var i in courses.data){
 	//parse the prereqs into a list
 	courses.data[i][3] = parsePrereqs(courses.data[i][3]);
 	//courseNodes.push({data: { id: courses.data[i][0]}});
-	currentObj = courses.data[i][0];
+	currentObj = i;
 	currentThousand = (Math.ceil(currentObj.substring(currentObj.length - 4) / 1000) * 1000);
 	cy.add({
 		group: "nodes",
@@ -286,6 +286,56 @@ for(i in courses.data){
 	}
 }
 
-console.log(cy.elements.nodes);
-console.log(cy.elements.edges);
+var getHeight = function(node){
+	//console.log(node);
+	var height = 1;
+	if(node.children().length != 0){
+		console.log("haschildren");
+	   var children = node.children();
+	   var max = 0;
+	   var tempHeight = 0;
+	   for(i in children){
+		   tempHeight = getHeight(children[i]);
+		   if(tempHeight > max){
+			   max = tempHeight;
+		   }
+	   }
+	   height += max;
+	}
+	console.log(height);
+	return height;
+	//return node.length;
+
+}
+
+
+var nodes = cy.nodes();
+var pr = cy.elements().pageRank();
+var x = 0;
+var height = window.innerHeight;
+var distances = [];
+var c = 0;
+console.log(nodes);
+for(var i in nodes){
+	//var rank = nodes[i].rank();
+	// nodes[i].position('x', x);
+	// var y = height * rank * 100;
+	// distances["CSE 1212"] = nodes[i].dijkstra({root: nodes["CSE 1212"], directed: true});
+	// distances["CSE 1222"] = nodes[i].dijkstra({root: nodes["CSE 1222"], directed: true});
+	// distances["CSE 1211"] = nodes[i].dijkstra({root: nodes["CSE 1211"], directed: true});
+	// distances["CSE 1221"] = nodes[i].dijkstra({root: nodes["CSE 1221"], directed: true});
+	// distances["CSE 1223"] = nodes[i].dijkstra({root: nodes["CSE 1223"], directed: true});
+	//var y = Math.max(distances);
+	var node = nodes[i];
+	console.log(nodes[i])
+	if(nodes[i] == 163){
+		break;
+	}
+	var y = getHeight(nodes[i])
+	nodes[i].position('y', y);
+	x += width / nodes.length;
+	c++;
+	//console.log(y);
+	
+ }
 
