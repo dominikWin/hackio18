@@ -271,6 +271,7 @@ for(var i in courses.data){
   infoText = '<a href="' + courses.data[i][4] + '">' + currentObj + "</a>: " + courses.data[i][1] + "<hr><br />" + courses.data[i][2] + "<br /><br />Prerequisites: " + courses.data[i][3];
 	
 	infoText = infoText + "<br /><a href=\"#\" id=\"mc" + currentObj + "\" onclick=\"mark_completed(this.id)\">Mark Completed</a>";
+	infoText = infoText + " <a href=\"#\" id=\"sp" + currentObj + "\" onclick=\"show_prereqs(this.id)\">Show Prerequs</a>";
 
   cy.$("[id='" + currentObj + "']").qtip({
     content: infoText,
@@ -300,6 +301,23 @@ for(i in courses.data){
 			});
 		}
 	}
+}
+
+function recursive_highlight(node, color) {
+	var neighbors = node.outgoers();
+	console.log(neighbors);
+	for(var i = 0; i < neighbors.length; i++) {
+		if(neighbors[i]._private.group == 'edges') {
+			continue;
+		}
+		neighbors[i].data('bg', color);
+		recursive_highlight(neighbors[i], color);
+	}
+}
+
+function show_prereqs(id) {
+	var currentObj = id.substring(2);
+	recursive_highlight(cy.$("[id='" + currentObj + "']"), '#ff0000');
 }
 
 function mark_completed(id) {
